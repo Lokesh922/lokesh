@@ -80,14 +80,14 @@ job_description = st.text_area(
 height=200
 )
 
-if uploaded_resume and job_description:
+  if uploaded_resume and job_description:
 
 
-resume_text = extract_pdf_text(uploaded_resume)
+  resume_text = extract_pdf_text(uploaded_resume)
 
-resume_skills = extract_skills(resume_text)
+  resume_skills = extract_skills(resume_text)
 
-jd_skills = extract_skills(job_description)
+  jd_skills = extract_skills(job_description)
 
 matched = sorted(
     list(set(resume_skills).intersection(set(jd_skills)))
