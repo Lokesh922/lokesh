@@ -57,7 +57,7 @@ return sorted(list(set(found)))
 
 def calculate_ats(resume_skills, jd_skills):
     if len(jd_skills) == 0:
-return 0
+       return 0
 
 
 matched = set(resume_skills).intersection(set(jd_skills))
