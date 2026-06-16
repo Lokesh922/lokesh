@@ -33,10 +33,9 @@ SKILLS_DB = [
 ]
 
 def extract_pdf_text(uploaded_file):
-reader = PdfReader(uploaded_file)
+    reader = PdfReader(uploaded_file)
 text = ""
 
-```
 for page in reader.pages:
     page_text = page.extract_text()
 
@@ -44,30 +43,29 @@ for page in reader.pages:
         text += page_text + " "
 
 return text.lower()
-```
+
 
 def extract_skills(text):
 found = []
 
-```
+
 for skill in SKILLS_DB:
     if skill.lower() in text.lower():
         found.append(skill)
 
 return sorted(list(set(found)))
-```
 
 def calculate_ats(resume_skills, jd_skills):
 if len(jd_skills) == 0:
 return 0
 
-```
+
 matched = set(resume_skills).intersection(set(jd_skills))
 
 score = int((len(matched) / len(jd_skills)) * 100)
 
 return score
-```
+
 
 st.title("📄 Resume Analyzer Pro")
 st.caption("ATS Score • Skill Gap Analysis")
@@ -84,7 +82,7 @@ height=200
 
 if uploaded_resume and job_description:
 
-```
+
 resume_text = extract_pdf_text(uploaded_resume)
 
 resume_skills = extract_skills(resume_text)
@@ -136,7 +134,7 @@ st.subheader("Missing Skills")
 st.write(missing)
 
 report = f"""
-```
+
 
 ATS Score: {ats_score}%
 
@@ -147,10 +145,10 @@ Missing Skills:
 {', '.join(missing)}
 """
 
-```
+
 st.download_button(
     "Download Report",
     report,
     file_name="resume_report.txt"
 )
-```
+
