@@ -1,6 +1,3 @@
-import re
-from collections import Counter
-
 import pandas as pd
 import plotly.express as px
 import streamlit as st
@@ -13,12 +10,26 @@ layout="wide"
 )
 
 SKILLS_DB = [
-"python","java","c++","sql","aws","azure","gcp",
-"machine learning","deep learning","tensorflow",
-"pytorch","docker","kubernetes","git","github",
-"linux","data analysis","pandas","numpy",
-"power bi","tableau","excel","flask","django",
-"streamlit","nlp","computer vision"
+"python",
+"java",
+"c++",
+"sql",
+"aws",
+"docker",
+"git",
+"github",
+"machine learning",
+"deep learning",
+"tensorflow",
+"pytorch",
+"pandas",
+"numpy",
+"excel",
+"power bi",
+"tableau",
+"streamlit",
+"flask",
+"django"
 ]
 
 def extract_pdf_text(uploaded_file):
@@ -28,6 +39,7 @@ text = ""
 ```
 for page in reader.pages:
     page_text = page.extract_text()
+
     if page_text:
         text += page_text + " "
 
@@ -61,7 +73,7 @@ st.title("📄 Resume Analyzer Pro")
 st.caption("ATS Score • Skill Gap Analysis • Recruiter Feedback")
 
 uploaded_resume = st.file_uploader(
-"Upload Resume (PDF)",
+"Upload Resume PDF",
 type=["pdf"]
 )
 
@@ -94,34 +106,12 @@ ats_score = calculate_ats(
 
 job_fit = min(100, ats_score + 5)
 
-st.divider()
-
 c1, c2, c3, c4 = st.columns(4)
 
 c1.metric("ATS Score", f"{ats_score}%")
 c2.metric("Job Fit", f"{job_fit}%")
 c3.metric("Matched Skills", len(matched))
 c4.metric("Missing Skills", len(missing))
-
-st.divider()
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.subheader("✅ Matched Skills")
-
-    if matched:
-        st.success(", ".join(matched))
-    else:
-        st.warning("No matching skills found.")
-
-with col2:
-    st.subheader("❌ Missing Skills")
-
-    if missing:
-        st.error(", ".join(missing))
-    else:
-        st.success("No missing skills detected.")
 
 chart_df = pd.DataFrame({
     "Category": ["Matched", "Missing"],
@@ -140,105 +130,27 @@ st.plotly_chart(
     use_container_width=True
 )
 
-st.subheader("📊 Resume Strengths")
+st.subheader("Matched Skills")
+st.write(matched)
 
-strengths = []
-
-if ats_score >= 70:
-    strengths.append(
-        "Strong keyword alignment with job description."
-    )
-
-if len(matched) >= 5:
-    strengths.append(
-        "Good skill coverage."
-    )
-
-if not strengths:
-    strengths.append(
-        "Resume contains relevant experience."
-    )
-
-for item in strengths:
-    st.write("•", item)
-
-st.subheader("⚠️ Resume Weaknesses")
-
-weaknesses = []
-
-if ats_score < 60:
-    weaknesses.append(
-        "Low ATS score."
-    )
-
-if len(missing) > 0:
-    weaknesses.append(
-        "Important skills are missing."
-    )
-
-if not weaknesses:
-    weaknesses.append(
-        "No major weaknesses detected."
-    )
-
-for item in weaknesses:
-    st.write("•", item)
-
-st.subheader("💡 Recommendations")
-
-if missing:
-    for skill in missing:
-        st.write(
-            f"• Add experience or keywords related to {skill}"
-        )
-else:
-    st.write(
-        "Resume is well aligned with the job description."
-    )
-
-st.subheader("👨‍💼 Recruiter Feedback")
-
-if ats_score >= 80:
-    st.success(
-        "Likely to pass initial ATS screening."
-    )
-elif ats_score >= 60:
-    st.warning(
-        "Moderate fit. Improve missing skills."
-    )
-else:
-    st.error(
-        "Low compatibility for this role."
-    )
-
-st.subheader("🎯 Interview Questions")
-
-for skill in matched[:5]:
-    st.write(
-        f"• Explain your experience with {skill}."
-    )
+st.subheader("Missing Skills")
+st.write(missing)
 
 report = f"""
 ```
 
-Resume Analyzer Report
-
 ATS Score: {ats_score}%
-Job Fit: {job_fit}%
 
 Matched Skills:
-{", ".join(matched)}
+{', '.join(matched)}
 
 Missing Skills:
-{", ".join(missing)}
-
-Recommendations:
-{chr(10).join([f"- Add {s}" for s in missing])}
+{', '.join(missing)}
 """
 
 ```
 st.download_button(
-    "📥 Download Report",
+    "Download Report",
     report,
     file_name="resume_report.txt"
 )
