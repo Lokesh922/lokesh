@@ -70,7 +70,7 @@ return score
 ```
 
 st.title("📄 Resume Analyzer Pro")
-st.caption("ATS Score • Skill Gap Analysis • Recruiter Feedback")
+st.caption("ATS Score • Skill Gap Analysis")
 
 uploaded_resume = st.file_uploader(
 "Upload Resume PDF",
@@ -79,7 +79,7 @@ type=["pdf"]
 
 job_description = st.text_area(
 "Paste Job Description",
-height=250
+height=200
 )
 
 if uploaded_resume and job_description:
@@ -104,14 +104,13 @@ ats_score = calculate_ats(
     jd_skills
 )
 
-job_fit = min(100, ats_score + 5)
+st.subheader("ATS Results")
 
-c1, c2, c3, c4 = st.columns(4)
+col1, col2, col3 = st.columns(3)
 
-c1.metric("ATS Score", f"{ats_score}%")
-c2.metric("Job Fit", f"{job_fit}%")
-c3.metric("Matched Skills", len(matched))
-c4.metric("Missing Skills", len(missing))
+col1.metric("ATS Score", f"{ats_score}%")
+col2.metric("Matched Skills", len(matched))
+col3.metric("Missing Skills", len(missing))
 
 chart_df = pd.DataFrame({
     "Category": ["Matched", "Missing"],
