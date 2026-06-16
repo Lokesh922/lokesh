@@ -46,7 +46,7 @@ return text.lower()
 
 
 def extract_skills(text):
-found = []
+    found = []
 
 
 for skill in SKILLS_DB:
@@ -56,7 +56,7 @@ for skill in SKILLS_DB:
 return sorted(list(set(found)))
 
 def calculate_ats(resume_skills, jd_skills):
-if len(jd_skills) == 0:
+    if len(jd_skills) == 0:
 return 0
 
 
@@ -143,7 +143,7 @@ Matched Skills:
 
 Missing Skills:
 {', '.join(missing)}
-"""
+
 
 
 st.download_button(
